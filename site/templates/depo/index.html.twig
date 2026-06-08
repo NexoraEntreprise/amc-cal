@@ -1,0 +1,294 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendrier - Amicale
+{% endblock %}
+
+{% block body %}
+	<style>
+		/* Réinitialisation globale et police de caractères */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+		}
+
+		body {
+			background-color: #1a1a1a; /* Fond sombre pour simuler le contour du mockup */
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 100vh;
+			padding: 20px;
+		}
+
+		/* Conteneur principal (effet écran de téléphone) */
+		.phone-container {
+			background-color: #f8fafd;
+			width: 100%;
+			max-width: 430px; /* Largeur standard d'un écran d'iPhone */
+			border-radius: 30px;
+			padding: 35px 24px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+		}
+
+		/* En-tête */
+		.header {
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		.calendar-icon-wrapper {
+			background-color: #eff4fc;
+			width: 65px;
+			height: 65px;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: 0 auto 15px;
+		}
+
+		.calendar-icon-wrapper i {
+			font-size: 28px;
+			color: #0b2240;
+		}
+
+		.header h1 {
+			color: #0b2240;
+			font-size: 24px;
+			font-weight: 700;
+			letter-spacing: 0.5px;
+			margin-bottom: 6px;
+		}
+
+		.header p {
+			color: #7e8b9b;
+			font-size: 13.5px;
+		}
+
+		/* Groupes de champs du Formulaire */
+		.calendar-form {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+		}
+
+		.form-group {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+		}
+
+		.form-group label {
+			display: flex;
+			align-items: center;
+			color: #0b2240;
+			font-size: 15px;
+			font-weight: 600;
+		}
+
+		.icon-label {
+			background-color: #eff4fc;
+			color: #3b5a85;
+			width: 32px;
+			height: 32px;
+			border-radius: 8px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-right: 12px;
+			font-size: 14px;
+		}
+
+		/* Inputs de saisie */
+		input[type="text"],
+		input[type="number"] {
+			width: 100%;
+			height: 50px;
+			padding: 0 16px;
+			border: 1px solid #e2e8f0;
+			border-radius: 10px;
+			background-color: #ffffff;
+			font-size: 14.5px;
+			color: #333;
+			outline: none;
+			transition: border-color 0.2s;
+		}
+
+		input::placeholder {
+			color: #a0aec0;
+		}
+
+		input:focus {
+			border-color: #3b5a85;
+		}
+
+		/* wrapper spécifique pour la devise (€) */
+		.input-currency-wrapper {
+			position: relative;
+			width: 100%;
+		}
+
+		.input-currency-wrapper input {
+			padding-right: 40px;
+		}
+
+		.currency-symbol {
+			position: absolute;
+			right: 16px;
+			top: 50%;
+			transform: translateY(-50%);
+			color: #7e8b9b;
+			font-size: 16px;
+		}
+
+		/* Zone de signature */
+		.signature-pad {
+			width: 100%;
+			height: 150px;
+			border: 1px dashed #cbd5e1;
+			border-radius: 12px;
+			background-color: #ffffff;
+			display: flex;
+			justify-content: center;
+			align-items: flex-end;
+			padding-bottom: 25px;
+		}
+
+		.signature-pad span {
+			color: #a0aec0;
+			font-size: 14px;
+			position: relative;
+		}
+
+		/* Ligne pointillée décorative pour la signature */
+		.signature-pad span::before,
+		.signature-pad span::after {
+			content: "";
+			position: absolute;
+			top: 50%;
+			width: 80px;
+			border-top: 1px dashed #cbd5e1;
+		}
+
+		.signature-pad span::before {
+			right: 100%;
+			margin-right: 10px;
+		}
+
+		.signature-pad span::after {
+			left: 100%;
+			margin-left: 10px;
+		}
+
+		/* Bouton de validation */
+		.btn-submit {
+			background-color: #0b2240;
+			color: #ffffff;
+			border: none;
+			border-radius: 10px;
+			height: 54px;
+			font-size: 15px;
+			font-weight: 600;
+			cursor: pointer;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 10px;
+			margin-top: 10px;
+			transition: background-color 0.2s;
+		}
+
+		.btn-submit i {
+			font-size: 18px;
+		}
+
+		.btn-submit:hover {
+			background-color: #14355e;
+		}
+
+		#signature-pad {
+			width: 100%;
+			height: 220px;
+			border: 2px dashed #d1d5db;
+			border-radius: 12px;
+			background: white;
+			touch-action: none;
+		}
+
+		#clear-signature {
+			margin-top: 10px;
+			width: 100%;
+			height: 45px;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+		}
+	</style>
+
+	<div class="phone-container">
+		<div class="header">
+			<div class="calendar-icon-wrapper">
+				<i class="fa-regular fa-calendar-days"></i>
+			</div>
+			<h1>FICHE CALENDRIER</h1>
+			<p>Veuillez remplir les informations ci-dessous</p>
+		</div>
+
+		{{ form_start(form, {'attr': {'class': 'calendar-form'}}) }}
+
+		{{ form_row(form.nom) }}
+
+		{{ form_row(form.prenom) }}
+
+		{{ form_row(form.argentRecolte) }}
+
+		{{ form_row(form.nombreCalendrier) }}
+
+		<div class="form-group">
+
+			<label>Signature</label>
+
+			<canvas id="signature-pad"></canvas>
+
+			<input type="hidden" id="signature" name="signature">
+
+			<button type="button" id="clear-signature">
+				Effacer la signature
+			</button>
+
+		</div>
+
+		{{ form_widget(form.submit, {'attr': {'class': 'btn-submit'}}) }}
+
+		{{ form_end(form) }}
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+
+	<script>
+
+		const canvas = document.getElementById('signature-pad');
+
+canvas.width = canvas.offsetWidth;
+canvas.height = 220;
+
+const signaturePad = new SignaturePad(canvas);
+
+document.querySelector('form').addEventListener('submit', function () {
+
+if (! signaturePad.isEmpty()) {
+
+document.getElementById('signature').value = signaturePad.toDataURL();
+}
+
+});
+
+document.getElementById('clear-signature').addEventListener('click', () => {
+
+signaturePad.clear();
+
+});
+	</script>
+{% endblock %}
