@@ -1,311 +1,356 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin - Amicale{% endblock %}
+{% block title %}Admin - Amicale
+{% endblock %}
 
 {% block body %}
-<div class="admin-page">
-    <h1>Tableau de bord</h1>
+	<div class="admin-page">
+		<div class="admin-header">
+			<h1>Tableau de bord</h1>
 
-    <div class="stats">
-        <div class="card">
-            <span>Calendriers donnés</span>
-            <strong>{{ totalCalendriers|default(0) }}</strong>
-        </div>
+			<a href="{{ path('app_register') }}" class="btn-create-user">
+				<i class="fa-solid fa-user-plus"></i>
+				Créer un compte
+			</a>
+		</div>
 
-        <div class="card">
-            <span>Argent récolté</span>
-            <strong>{{ totalArgent|default(0)|number_format(2, ',', ' ') }} €</strong>
-        </div>
-    </div>
+		<div class="stats">
+			<div class="card">
+				<span>Calendriers donnés</span>
+				<strong>{{ totalCalendriers|default(0) }}</strong>
+			</div>
 
-    <div class="section">
-        <h2>10 derniers calendriers donnés</h2>
+			<div class="card">
+				<span>Argent récolté</span>
+				<strong>{{ totalArgent|default(0)|number_format(2, ',', ' ') }}
+					€</strong>
+			</div>
+		</div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Montant</th>
-                    <th>Calendriers</th>
-                    <th>Ajouté par</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for calendrier in lastCalendriers %}
-                    <tr>
-                        <td>{{ calendrier.nom }}</td>
-                        <td>{{ calendrier.prenom }}</td>
-                        <td>{{ calendrier.argentRecolte }} €</td>
-                        <td>{{ calendrier.nombreCalendrier }}</td>
-                        <td>{{ calendrier.createdBy.email }}</td>
-                        <td>{{ calendrier.createdAt|date('d/m/Y H:i') }}</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="6">Aucun calendrier enregistré.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+		<div class="section">
+			<h2>10 derniers calendriers donnés</h2>
 
-    <div class="section">
-        <h2>Utilisateurs et historique</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Nom</th>
+						<th>Prénom</th>
+						<th>Montant</th>
+						<th>Calendriers</th>
+						<th>Ajouté par</th>
+						<th>Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for calendrier in lastCalendriers %}
+						<tr>
+							<td>{{ calendrier.nom }}</td>
+							<td>{{ calendrier.prenom }}</td>
+							<td>{{ calendrier.argentRecolte }}
+								€</td>
+							<td>{{ calendrier.nombreCalendrier }}</td>
+							<td>{{ calendrier.createdBy.email }}</td>
+							<td>{{ calendrier.createdAt|date('d/m/Y H:i') }}</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">Aucun calendrier enregistré.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
 
-        {% for user in users %}
-            <div class="user-card">
-                <h3>{{ user.email }}</h3>
+		<div class="section">
+			<h2>Utilisateurs et historique</h2>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Montant</th>
-                            <th>Calendriers</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for calendrier in user.calendriers %}
-                            <tr>
-                                <td>{{ calendrier.nom }}</td>
-                                <td>{{ calendrier.prenom }}</td>
-                                <td>{{ calendrier.argentRecolte }} €</td>
-                                <td>{{ calendrier.nombreCalendrier }}</td>
-                                <td>{{ calendrier.createdAt|date('d/m/Y H:i') }}</td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="5">Aucun historique.</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% endfor %}
-    </div>
-</div>
+			{% for user in users %}
+				<div class="user-card">
+					<h3>{{ user.email }}</h3>
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+					<table>
+						<thead>
+							<tr>
+								<th>Nom</th>
+								<th>Prénom</th>
+								<th>Montant</th>
+								<th>Calendriers</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for calendrier in user.calendriers %}
+								<tr>
+									<td>{{ calendrier.nom }}</td>
+									<td>{{ calendrier.prenom }}</td>
+									<td>{{ calendrier.argentRecolte }}
+										€</td>
+									<td>{{ calendrier.nombreCalendrier }}</td>
+									<td>{{ calendrier.createdAt|date('d/m/Y H:i') }}</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="5">Aucun historique.</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 
-body {
-    background: #f3f6fb;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: #0b2240;
-}
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
 
-.admin-page {
-    width: 100%;
-    max-width: 1250px;
-    margin: 40px auto;
-    padding: 20px;
-}
+		body {
+			background: #f3f6fb;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+			color: #0b2240;
+		}
 
-.admin-page h1 {
-    font-size: 32px;
-    margin-bottom: 25px;
-}
+		.admin-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 25px;
+		}
 
-.stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    margin-bottom: 30px;
-}
+		.btn-create-user {
+			background: #0b2240;
+			color: white;
+			text-decoration: none;
+			padding: 12px 18px;
+			border-radius: 10px;
+			font-weight: 600;
+			transition: 0.2s;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
 
-.card,
-.section,
-.user-card {
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 24px;
-    box-shadow: 0 8px 25px rgba(11, 34, 64, 0.08);
-    border: 1px solid #e5eaf1;
-}
+		.btn-create-user:hover {
+			background: #14355e;
+		}
 
-.card span {
-    color: #64748b;
-    font-size: 15px;
-    font-weight: 600;
-}
+		.admin-page {
+			width: 100%;
+			max-width: 1250px;
+			margin: 40px auto;
+			padding: 20px;
+		}
 
-.card strong {
-    display: block;
-    margin-top: 12px;
-    font-size: 38px;
-    color: #0b2240;
-}
+		.admin-page h1 {
+			font-size: 32px;
+			margin-bottom: 25px;
+		}
 
-.section {
-    margin-bottom: 30px;
-}
+		.stats {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 20px;
+			margin-bottom: 30px;
+		}
 
-.section h2 {
-    font-size: 22px;
-    margin-bottom: 18px;
-}
+		.card,
+		.section,
+		.user-card {
+			background: #ffffff;
+			border-radius: 18px;
+			padding: 24px;
+			box-shadow: 0 8px 25px rgba(11, 34, 64, 0.08);
+			border: 1px solid #e5eaf1;
+		}
 
-.user-card {
-    margin-top: 20px;
-}
+		.card span {
+			color: #64748b;
+			font-size: 15px;
+			font-weight: 600;
+		}
 
-.user-card h3 {
-    font-size: 17px;
-    margin-bottom: 12px;
-    color: #14355e;
-}
+		.card strong {
+			display: block;
+			margin-top: 12px;
+			font-size: 38px;
+			color: #0b2240;
+		}
 
-.table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-}
+		.section {
+			margin-bottom: 30px;
+		}
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 12px;
-    background: #ffffff;
-    border-radius: 12px;
-    overflow: hidden;
-}
+		.section h2 {
+			font-size: 22px;
+			margin-bottom: 18px;
+		}
 
-th {
-    background: #eef3f9;
-    color: #0b2240;
-    padding: 14px;
-    text-align: left;
-    font-size: 14px;
-    font-weight: 700;
-    border-bottom: 1px solid #dbe3ee;
-}
+		.user-card {
+			margin-top: 20px;
+		}
 
-td {
-    padding: 14px;
-    border-bottom: 1px solid #edf2f7;
-    font-size: 14px;
-    color: #334155;
-}
+		.user-card h3 {
+			font-size: 17px;
+			margin-bottom: 12px;
+			color: #14355e;
+		}
 
-tr:hover td {
-    background: #f8fafd;
-}
+		.table-wrapper {
+			width: 100%;
+			overflow-x: auto;
+		}
 
-tbody tr:last-child td {
-    border-bottom: none;
-}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 12px;
+			background: #ffffff;
+			border-radius: 12px;
+			overflow: hidden;
+		}
 
-/* TABLETTE */
-@media (max-width: 900px) {
-    .admin-page {
-        margin: 25px auto;
-        padding: 15px;
-    }
+		th {
+			background: #eef3f9;
+			color: #0b2240;
+			padding: 14px;
+			text-align: left;
+			font-size: 14px;
+			font-weight: 700;
+			border-bottom: 1px solid #dbe3ee;
+		}
 
-    .stats {
-        grid-template-columns: 1fr;
-    }
+		td {
+			padding: 14px;
+			border-bottom: 1px solid #edf2f7;
+			font-size: 14px;
+			color: #334155;
+		}
 
-    .admin-page h1 {
-        font-size: 27px;
-    }
+		tr:hover td {
+			background: #f8fafd;
+		}
 
-    .section h2 {
-        font-size: 20px;
-    }
+		tbody tr:last-child td {
+			border-bottom: none;
+		}
 
-    .card,
-    .section,
-    .user-card {
-        padding: 18px;
-    }
+		/* TABLETTE */
+		@media(max-width: 900px) {
+			.admin-page {
+				margin: 25px auto;
+				padding: 15px;
+			}
 
-    .card strong {
-        font-size: 32px;
-    }
-}
+			.stats {
+				grid-template-columns: 1fr;
+			}
 
-/* MOBILE */
-@media (max-width: 600px) {
-    body {
-        background: #f3f6fb;
-    }
+			.admin-page h1 {
+				font-size: 27px;
+			}
 
-    .admin-page {
-        margin: 15px auto;
-        padding: 10px;
-    }
+			.section h2 {
+				font-size: 20px;
+			}
 
-    .admin-page h1 {
-        font-size: 24px;
-        text-align: center;
-    }
+			.card,
+			.section,
+			.user-card {
+				padding: 18px;
+			}
 
-    .card,
-    .section,
-    .user-card {
-        border-radius: 14px;
-        padding: 16px;
-    }
+			.card strong {
+				font-size: 32px;
+			}
+		}
 
-    .card strong {
-        font-size: 28px;
-    }
+		/* MOBILE */
+		@media(max-width: 600px) {
+			body {
+				background: #f3f6fb;
+			}
 
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-        display: block;
-        width: 100%;
-    }
+			.admin-header {
+				flex-direction: column;
+				gap: 15px;
+			}
 
-    thead {
-        display: none;
-    }
+			.btn-create-user {
+				width: 100%;
+				justify-content: center;
+			}
 
-    tbody tr {
-        background: #ffffff;
-        border: 1px solid #e5eaf1;
-        border-radius: 14px;
-        padding: 12px;
-        margin-bottom: 14px;
-        box-shadow: 0 5px 14px rgba(11, 34, 64, 0.06);
-    }
+			.admin-page {
+				margin: 15px auto;
+				padding: 10px;
+			}
 
-    td {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 15px;
-        border-bottom: 1px solid #edf2f7;
-        padding: 10px 0;
-        font-size: 14px;
-    }
+			.admin-page h1 {
+				font-size: 24px;
+				text-align: center;
+			}
 
-    td:last-child {
-        border-bottom: none;
-    }
+			.card,
+			.section,
+			.user-card {
+				border-radius: 14px;
+				padding: 16px;
+			}
 
-    td::before {
-        content: attr(data-label);
-        font-weight: 700;
-        color: #0b2240;
-        flex-shrink: 0;
-    }
+			.card strong {
+				font-size: 28px;
+			}
 
-    tr:hover td {
-        background: transparent;
-    }
-}
-</style>
+			table,
+			thead,
+			tbody,
+			th,
+			td,
+			tr {
+				display: block;
+				width: 100%;
+			}
+
+			thead {
+				display: none;
+			}
+
+			tbody tr {
+				background: #ffffff;
+				border: 1px solid #e5eaf1;
+				border-radius: 14px;
+				padding: 12px;
+				margin-bottom: 14px;
+				box-shadow: 0 5px 14px rgba(11, 34, 64, 0.06);
+			}
+
+			td {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				gap: 15px;
+				border-bottom: 1px solid #edf2f7;
+				padding: 10px 0;
+				font-size: 14px;
+			}
+
+			td:last-child {
+				border-bottom: none;
+			}
+
+			td::before {
+				content: attr(data-label);
+				font-weight: 700;
+				color: #0b2240;
+				flex-shrink: 0;
+			}
+
+			tr:hover td {
+				background: transparent;
+			}
+		}
+	</style>
 {% endblock %}
