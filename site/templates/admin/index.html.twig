@@ -437,156 +437,99 @@ tbody tr:last-child td {
 	border-bottom: none;
 }
 
-/* TABLETTE */
-@media(max-width: 900px) {
-	.admin-page {
-		margin: 25px auto;
-		padding: 15px;
-	}
+/* ==========================================
+   DESIGN RESPONSIVE (SMARTPHONES & TABLETTES)
+   ========================================== */
+@media (max-width: 768px) {
+    
+    /* Ajustements généraux de la page */
+    .admin-page {
+        margin: 15px auto;
+        padding: 12px;
+    }
 
-	.stats {
-		grid-template-columns: 1fr;
-	}
+    /* En-tête : on passe l'un sous l'autre */
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
 
-	.admin-page h1 {
-		font-size: 27px;
-	}
+    .admin-page h1 {
+        font-size: 26px;
+    }
 
-	.create-city-form {
-		grid-template-columns: 1fr;
-	}
+    .btn-create-user {
+        width: 100%; /* Le bouton prend toute la largeur pour être plus cliquable */
+    }
 
-	.card,
-	.section,
-	.user-card {
-		padding: 18px;
-	}
+    /* Statistiques : 1 seule colonne au lieu de 3 */
+    .stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
 
-	.card strong {
-		font-size: 32px;
-	}
-}
+    .card {
+        padding: 16px;
+    }
 
-/* MOBILE */
-@media(max-width: 600px) {
-	.admin-page {
-		margin: 0;
-		padding: 12px;
-	}
+    .card strong {
+        font-size: 30px;
+        margin-top: 8px;
+    }
 
-	.admin-header {
-		background: #ffffff;
-		border-radius: 18px;
-		padding: 18px;
-		box-shadow: 0 8px 25px rgba(11, 34, 64, 0.08);
-		border: 1px solid #e5eaf1;
-		flex-direction: column;
-		gap: 14px;
-		text-align: center;
-	}
+    /* Sections principales */
+    .section, .user-card {
+        padding: 16px;
+        border-radius: 14px;
+        margin-bottom: 20px;
+    }
 
-	.admin-page h1 {
-		font-size: 24px;
-	}
+    /* Formulaire de création de ville : empilement vertical */
+    .create-city-form {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
 
-	.btn-create-user {
-		width: 100%;
-		height: 48px;
-	}
+    .create-city-form input,
+    .btn-action {
+        width: 100%;
+    }
 
-	.stats {
-		gap: 12px;
-		margin-bottom: 16px;
-	}
+    /* Grille des profils : 1 seul profil par ligne */
+    .profiles-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
 
-	.card,
-	.section,
-	.user-card {
-		border-radius: 16px;
-		padding: 16px;
-	}
+    .profile-card-wrapper {
+        gap: 6px;
+    }
+    
+    .btn-delete-profile {
+        min-width: 46px; /* Ajustement pour les petits écrans */
+    }
 
-	.card strong {
-		font-size: 28px;
-	}
+    /* Optimisation du Tableau pour Mobile 
+       On force le tableau à défiler horizontalement pour éviter qu'il ne s'écrase
+    */
+    .user-card {
+        overflow-x: auto; /* Permet le scroll horizontal si le tableau est trop large */
+        -webkit-overflow-scrolling: touch;
+    }
 
-	.section {
-		margin-bottom: 16px;
-	}
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
 
-	.section h2 {
-		font-size: 19px;
-	}
-
-	.profiles-grid {
-		grid-template-columns: 1fr;
-		gap: 10px;
-	}
-
-	.profile-card {
-		min-height: 52px;
-		padding: 14px;
-	}
-
-	.btn-delete-profile {
-		width: 52px;
-		min-width: 52px;
-	}
-
-	table,
-	thead,
-	tbody,
-	th,
-	td,
-	tr {
-		display: block;
-		width: 100%;
-	}
-
-	table {
-		margin-top: 10px;
-	}
-
-	thead {
-		display: none;
-	}
-
-	tbody tr {
-		background: #ffffff;
-		border: 1px solid #e5eaf1;
-		border-radius: 16px;
-		padding: 12px;
-		margin-bottom: 12px;
-		box-shadow: 0 5px 14px rgba(11, 34, 64, 0.06);
-	}
-
-	td {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-		gap: 14px;
-		border-bottom: 1px solid #edf2f7;
-		padding: 10px 0;
-		font-size: 14px;
-		text-align: right;
-		word-break: break-word;
-	}
-
-	td:last-child {
-		border-bottom: none;
-	}
-
-	td::before {
-		content: attr(data-label);
-		font-weight: 800;
-		color: #0b2240;
-		text-align: left;
-		flex: 0 0 45%;
-	}
-
-	tr:hover td {
-		background: transparent;
-	}
+    th, td {
+        padding: 10px 12px;
+        font-size: 13px;
+        white-space: nowrap; /* Évite que les textes longs ne se coupent bizarrement */
+    }
 }
 </style>
 {% endblock %}
