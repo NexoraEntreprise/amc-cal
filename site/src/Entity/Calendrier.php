@@ -20,21 +20,28 @@ class Calendrier
     #[ORM\Column(length: 100)]
     private ?string $prenom = null;
 
+    #[ORM\Column(length: 100, nullable: false)]
+    private ?string $prenomPompier = null;
+
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $argentRecolte = null;
 
     #[ORM\Column]
     private ?int $nombreCalendrier = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: false)]
     private ?string $signature = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-        #[ORM\ManyToOne]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $createdBy = null;
+
+    #[ORM\ManyToOne(targetEntity: Tournee::class, inversedBy: 'calendriers')]
+   #[ORM\JoinColumn(nullable: false)]
+    private ?Tournee $tournee = null;
 
     public function __construct()
     {
@@ -65,6 +72,17 @@ class Calendrier
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
+        return $this;
+    }
+
+    public function getPrenomPompier(): ?string
+    {
+        return $this->prenomPompier;
+    }
+
+    public function setPrenomPompier(?string $prenomPompier): static
+    {
+        $this->prenomPompier = $prenomPompier;
         return $this;
     }
 
@@ -120,7 +138,17 @@ class Calendrier
     public function setCreatedBy(?User $createdBy): static
     {
         $this->createdBy = $createdBy;
+        return $this;
+    }
 
+    public function getTournee(): ?Tournee
+    {
+        return $this->tournee;
+    }
+
+    public function setTournee(?Tournee $tournee): static
+    {
+        $this->tournee = $tournee;
         return $this;
     }
 }
