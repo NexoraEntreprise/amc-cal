@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Tournee;
+use App\Entity\User;
 use App\Repository\CalendrierRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -56,4 +58,55 @@ final class AdminController extends AbstractController
             'tournees' => $tournees,
         ]);
     }
+
+    #[Route('/admin/tournee/create', name: 'admin_create_tournee', methods: ['POST'])]
+public function createTournee(
+    Request $request,
+    EntityManagerInterface $em
+): Response {
+    $ville = $request->request->get('ville');
+    $codePostal = $request->request->get('codePostal');
+
+    if ($ville && $codePostal) {
+        $tournee = new Tournee();
+        $tournee->setVille($ville);
+        $tournee->setCodePostal($codePostal);
+
+        $em->persist($tournee);
+        $em->flush();
+    }
+
+    return $this->redirectToRoute('app_admin');
+}
+
+#[Route('/admin/user/{id}/delete', name: 'admin_delete_user', methods: ['POST'])]
+public function deleteUser(
+    User $user,
+    EntityManagerInterface $em
+): Response {
+    foreach ($user->getCalendriers() as $calendrier) {
+        $em->remove($calendrier);
+    }
+
+    $em->remove($user);
+    $em->flush();
+
+    return $this->redirectToRoute('app_admin');
+}
+
+#[Route('/admin/calendriers/reset', name: 'admin_reset_calendriers', methods: ['POST'])]
+public function resetCalendriers(
+    CalendrierRepository $calendrierRepository,
+    EntityManagerInterface $em
+): Response {
+    $calendriers = $calendrierRepository->findAll();
+
+    foreach ($calendriers as $calendrier) {
+        $em->remove($calendrier);
+    }
+
+    $em->flush();
+
+    return $this->redirectToRoute('app_admin');
+}
 }
